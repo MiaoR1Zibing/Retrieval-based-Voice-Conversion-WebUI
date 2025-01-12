@@ -824,10 +824,9 @@ def get_projects():
     for name in os.listdir(index_root):
         if os.path.isdir(os.path.join(index_root, name)) and name != 'mute':
             workdir = os.path.join(index_root, name, 'loss_graphs')
-            if os.path.isdir(workdir):
-                projects.append(name)
-            else:
+            if not os.path.isdir(workdir):
                 os.mkdir(workdir)
+            projects.append(name)
 
     # Check if there are any projects before accessing
     if projects:
