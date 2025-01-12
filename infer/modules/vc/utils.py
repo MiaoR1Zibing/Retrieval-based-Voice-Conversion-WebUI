@@ -1,12 +1,15 @@
 import os
 
 from fairseq import checkpoint_utils
+from pathlib import Path
 
 
 def get_index_path_from_model(sid):
+    s = Path(sid)
+    s = s.stem.rsplit("_e")[0]
     return next(
         (
-            f
+            f.replace('/','\\')
             for f in [
                 os.path.join(root, name)
                 for root, _, files in os.walk(os.getenv("index_root"), topdown=False)
@@ -18,7 +21,7 @@ def get_index_path_from_model(sid):
                 for name in files
                 if name.endswith(".index") and "trained" not in name
             ]
-            if sid.rsplit("_e")[0] in f or os.path.splitext(sid)[0] in f
+            if s in f
         ),
         "",
     )
