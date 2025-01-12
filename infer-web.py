@@ -820,13 +820,20 @@ def get_projects():
         str: The default project name (first in the list).
         dict: A dictionary of image paths keyed by desired_tags for the default project.
     """
-    projects = [name for name in os.listdir(index_root) if os.path.isdir(os.path.join(index_root, name)) and name != 'mute' and os.path.isdir(os.path.join(index_root, name, 'loss_graphs'))]
-    
+    projects = []
+    for name in os.listdir(index_root):
+        if os.path.isdir(os.path.join(index_root, name)) and name != 'mute':
+            workdir = os.path.join(index_root, name, 'loss_graphs')
+            if os.path.isdir(workdir):
+                projects.append(name)
+            else:
+                os.mkdir(workdir)
+
     # Check if there are any projects before accessing
     if projects:
         default_project_name = projects[0]
     else:
-        print("No projects found.")
+        print("[warn] No projects found.")
         default_project_name = None
 
     return sorted(projects), default_project_name
