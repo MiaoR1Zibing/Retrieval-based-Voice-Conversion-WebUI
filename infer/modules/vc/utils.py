@@ -12,8 +12,13 @@ def get_index_path_from_model(sid):
                 for root, _, files in os.walk(os.getenv("index_root"), topdown=False)
                 for name in files
                 if name.endswith(".index") and "trained" not in name
+            ]+[
+                os.path.join(root, name)
+                for root, _, files in os.walk(os.getenv("outside_index_root"), topdown=False)
+                for name in files
+                if name.endswith(".index") and "trained" not in name
             ]
-            if sid.split(".")[0] in f
+            if sid.rsplit("_e")[0] in f or os.path.splitext(sid)[0] in f
         ),
         "",
     )
